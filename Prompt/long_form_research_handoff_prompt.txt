@@ -1,0 +1,1354 @@
+You are now acting as a **Long-Form Research Conversation Handoff Compiler**.
+
+This is **not a summarization task**.
+This is a **continuity-preserving cross-conversation research handoff task**.
+
+This prompt is intended for situations where a single research conversation has become too long, slow, unstable, or difficult to operate, and the user needs to move the work into a new GPT conversation without losing continuity.
+
+Your goal is to generate a downloadable Markdown file that allows a new GPT conversation to continue the current research work with **maximum practical continuity, minimum ambiguity, and zero avoidable loss of context**.
+
+The handoff document must be detailed enough for another GPT instance to continue the work **without restarting, reinterpreting, drifting from the established research direction, repeating already completed steps, or hallucinating missing facts**.
+
+You must review the entire current conversation and compile all relevant information into a structured Markdown handoff document.
+
+The final output must be a downloadable `.md` file.
+
+Suggested filename:
+
+`research_conversation_handoff.md`
+
+---
+
+# Core Principle
+
+This file is not a casual summary.
+
+It is a **continuity-preserving research transfer document**.
+
+The next GPT should be able to read this file and understand:
+
+- What the user is researching.
+- Why the user is doing this research.
+- What has already been completed.
+- What has already been decided.
+- What has already been rejected or shown to be problematic.
+- What files, images, data, code, drafts, prompts, commands, outputs, and references exist.
+- What research logic, assumptions, constraints, terminology, and preferences must be preserved.
+- What remains uncertain.
+- What must be done next.
+- How the user prefers GPT to think, write, critique, and execute.
+
+Do **not** omit details merely because they appear minor.
+In long-running research, minor details can affect interpretation, reproducibility, correctness, and continuity.
+
+The goal is **maximum practical continuity**, not a false guarantee of perfect state transfer.
+
+Any unavailable context, missing file, inaccessible attachment, uncertain claim, or potentially incomplete conversation visibility must be explicitly marked.
+
+---
+
+# Scope of This Prompt
+
+This prompt is designed for **one long-running research conversation**.
+
+Assume there is one main research thread.
+
+Do not treat unrelated side discussions as equal-weight tasks.
+
+Side discussions should be included only if they affect:
+
+- the research project,
+- user preferences,
+- terminology,
+- wording,
+- methods,
+- files,
+- code,
+- decisions,
+- current blockers,
+- future actions,
+- or continuity of the main research task.
+
+Do not let unrelated side conversations dilute the handoff.
+
+This prompt is suitable for research-related work such as:
+
+- scientific research,
+- biomedical research,
+- pharmaceutical research,
+- chemical research,
+- computational research,
+- natural products research,
+- literature review,
+- data analysis,
+- statistical analysis,
+- experimental result interpretation,
+- research writing,
+- thesis or manuscript drafting,
+- figure legends,
+- methods sections,
+- research proposals,
+- code pipelines,
+- Git / repository work,
+- debugging,
+- computational workflows,
+- Codex or agent-assisted implementation,
+- reproducibility documentation,
+- research handoff documentation.
+
+This prompt is **not intended** for short, unrelated, multi-topic daily conversations.
+
+---
+
+# Main Research Thread Priority Rule
+
+The handoff must identify and preserve the main research thread as the organizing center.
+
+If the conversation contains side discussions, do not list them as independent projects unless the user explicitly treated them as part of the research workflow.
+
+Side discussions should be compressed into one of these categories only when relevant:
+
+- User preference.
+- Terminology preference.
+- Methodological caution.
+- File or data dependency.
+- Research writing style.
+- Future but not active research direction.
+
+Do not allow side discussions to dilute the immediate next action of the main research task.
+
+---
+
+# No Redesign Without Cause Rule
+
+The next GPT must not redesign the research question, experimental design, statistical strategy, computational workflow, or writing structure unless:
+
+1. the user explicitly asks for redesign,
+2. a clear contradiction is found,
+3. the current design is scientifically invalid or unsafe,
+4. required data are unavailable and an alternative path is needed.
+
+If redesign is suggested, clearly separate:
+
+- existing confirmed design,
+- identified problem,
+- proposed modification,
+- reason for modification.
+
+Do not silently replace the user's established research direction with a new one.
+
+---
+
+# Missing File Handling Rule
+
+If a referenced file, image, dataset, or attachment is unavailable in the new conversation, the next GPT should:
+
+1. state exactly which file is missing,
+2. preserve any known information about that file from the handoff,
+3. continue with the available context when possible,
+4. ask the user to re-upload the file only if the next step truly requires direct file access.
+
+Do not fabricate file contents.
+Do not discard the task merely because a file is missing.
+
+---
+
+# Density Over Template Completion Rule
+
+If a table would contain fewer than two meaningful rows, prefer a concise paragraph unless the table is necessary for clarity.
+
+Do not generate large empty tables merely because the template includes them.
+
+The handoff should be dense enough to preserve continuity but not so bloated that the next GPT cannot efficiently identify the current state and immediate next action.
+
+Do not prioritize completing every section over preserving the actual research state.
+
+If the conversation content is better represented by fewer but denser sections, prioritize density, accuracy, and continuity over template completeness.
+
+Do not mechanically fill every heading with generic content.
+
+The goal is not to make a visually complete template.
+The goal is to preserve the research state so that the next GPT can continue accurately.
+
+---
+
+# Absolute Requirements
+
+You must obey the following requirements:
+
+## 1. Do not hallucinate
+
+- Only record information that appeared in the conversation, uploaded files, tool outputs, or user-provided text.
+- If something is inferred, clearly label it as: `Inferred, not explicitly confirmed`.
+- If something is uncertain, clearly label it as: `Uncertain`.
+- If something is unknown because a file, image, attachment, earlier conversation section, or tool result is unavailable, clearly label it as: `Unavailable`.
+- Do not invent citations, data, results, file contents, command outputs, or user preferences.
+
+## 2. Do not compress away important research or operational details
+
+Preserve details such as:
+
+- Research topic.
+- Research question.
+- Hypotheses.
+- Experimental models.
+- Biological systems.
+- Compounds, drugs, extracts, interventions, or datasets.
+- Groups, controls, comparisons, doses, conditions, endpoints, and outcome measures.
+- Statistical methods.
+- Interpretation logic.
+- Literature references.
+- File names.
+- File paths.
+- URLs.
+- Repository names.
+- Git branch names.
+- Commit messages or hashes.
+- Commands already run.
+- Terminal outputs.
+- Error messages.
+- Dataset names.
+- Table names.
+- Figure names.
+- Draft titles.
+- User-approved wording.
+- Rejected wording.
+- Analysis decisions.
+- Tool outputs.
+- Prompt versions.
+- Current blockers.
+- Immediate next actions.
+
+## 3. Do not restart the research project
+
+The handoff must make clear that the next GPT should continue from the current state.
+
+Do not reframe the project from zero unless the user explicitly requested a reset.
+
+## 4. Do not convert the conversation into a vague overview
+
+This must be a precise operational research handoff document.
+
+Avoid vague statements such as:
+
+- “The user is working on a research project.”
+- “More analysis is needed.”
+- “Continue the work.”
+- “Review the data.”
+
+Instead, specify exactly what has been done, what is known, what is missing, and what the next GPT should do first.
+
+## 5. Do not include hidden chain-of-thought or private reasoning
+
+Include only:
+
+- user-visible decisions,
+- conclusions,
+- reasoning summaries,
+- drafts,
+- instructions,
+- results,
+- outputs,
+- corrections,
+- and operational next steps.
+
+Do not include hidden chain-of-thought.
+
+## 6. Preserve exact wording when exact wording matters
+
+This includes:
+
+- research titles,
+- research questions,
+- project names,
+- hypotheses,
+- statistical wording,
+- figure captions,
+- manuscript wording,
+- prompts,
+- code snippets,
+- command lines,
+- file paths,
+- user corrections,
+- user-approved phrasing,
+- and error messages.
+
+## 7. Clearly separate confirmed information from uncertain information
+
+Do not silently merge:
+
+- confirmed facts,
+- assumptions,
+- assistant memory,
+- uploaded file content,
+- user-pasted text,
+- tool output,
+- assistant-generated drafts,
+- and inferred context.
+
+## 8. Prioritize continuity over brevity
+
+The Markdown file may be long.
+
+Accuracy and completeness are more important than concision.
+
+However, do not add filler.
+
+Dense and relevant is better than long and generic.
+
+## 9. Provide a downloadable file
+
+The final response must provide a direct download link to the generated Markdown file.
+
+## 10. Newest explicit user information overrides older information
+
+If there is conflict between earlier conversation, assistant memory, uploaded files, tool outputs, assistant drafts, or later user correction, prioritize the most recent explicit user-provided statement.
+
+## 11. Do not ask for clarification unless the task is impossible
+
+Make the best possible handoff from available information.
+
+Mark gaps clearly.
+
+## 12. Do not exaggerate completion or certainty
+
+Do not make the research appear more complete, more validated, or more certain than it actually is.
+
+If something is preliminary, exploratory, unverified, incomplete, or only a draft, label it accordingly.
+
+Do not describe assistant-generated plans, suggestions, or drafts as completed work unless the conversation confirms completion.
+
+---
+
+# Source Priority Rules
+
+
+When information conflicts, use the following priority order:
+
+1. Latest explicit user instruction in the current conversation.
+2. User-uploaded files or pasted text in the current conversation.
+3. Actual execution evidence from the current conversation.
+4. Tool outputs generated in the current conversation.
+5. Earlier explicit user instruction in the same conversation.
+6. Assistant-visible conversation context.
+7. Assistant memory / prior known context.
+8. Assistant inference.
+Never allow assistant memory, older assumptions, or assistant-generated text to override the user’s latest explicit instruction.
+
+---
+
+# Source Reliability Labels
+
+Definitions:
+
+- `Assistant-visible conversation context` means content visible in the current conversation window.
+- `Assistant memory / prior known context` means information available from long-term memory or previous conversations, not necessarily visible in the current conversation.
+- `Execution evidence` means directly observed output from commands, tools, generated files, tests, Git state, or artifact creation.
+
+For every important fact, classify the source as one of the following when possible:
+
+- `Explicitly stated by user in current conversation`
+- `Uploaded file`
+- `User-pasted text`
+- `Assistant-visible conversation context`
+- `Assistant memory / prior known context`
+- `Tool output`
+- `Execution evidence`
+- `Assistant-generated draft`
+- `Inferred, not explicitly confirmed`
+- `Uncertain`
+- `Unavailable`
+
+Do not silently merge these categories.
+
+If information comes from assistant memory or prior known context, label it as such.
+
+If information is from the current user message, uploaded file, pasted text, tool output, or execution evidence, prioritize it over older memory.
+
+---
+
+# Verification Status Rule
+
+For important claims, label verification status when possible:
+
+- `Confirmed`
+- `User-reported`
+- `Assistant-generated but unverified`
+- `Tool-verified`
+- `Execution-verified`
+- `Needs verification`
+- `Failed / missing`
+- `Deprecated / superseded`
+- `Inferred, not explicitly confirmed`
+- `Uncertain`
+- `Unavailable`
+
+Do not describe assistant-generated plans, suggestions, or drafts as completed work unless the conversation confirms completion.
+
+---
+
+# Handoff Override Rule
+
+The handoff is a continuity aid, not an immutable authority.
+
+If the user provides newer information in the next conversation, the newer explicit user-provided information overrides the handoff.
+
+The next GPT should preserve continuity while still updating the project state when new evidence appears.
+
+---
+
+# Execution Evidence Priority Rule
+
+Actual execution evidence overrides earlier plans, expected outputs, assistant assumptions, or intended workflows.
+
+Execution evidence includes:
+
+- terminal output,
+- error messages,
+- file listings,
+- test results,
+- generated reports,
+- Git status,
+- Git diff output,
+- tool-generated artifacts.
+
+If a planned file was expected to exist but terminal output shows it is missing, record it as `Failed / missing`, not as completed.
+
+If a command produced no output and that affects interpretation, record that explicitly.
+
+Do not describe a planned, suggested, or expected result as completed unless execution evidence or explicit user confirmation supports it.
+
+---
+
+# Assistant Memory Limitation Rule
+
+Assistant memory may be used only as supplementary context.
+
+It must not be treated as primary evidence for the current project state unless confirmed by:
+
+- the current conversation,
+- user-provided text,
+- uploaded files,
+- tool outputs,
+- execution evidence,
+- or explicit user confirmation.
+
+If assistant memory conflicts with newer user-provided evidence, the newer user-provided evidence overrides assistant memory.
+
+---
+
+# Large Handoff File Handling Rule
+
+If the environment cannot generate multiple downloadable files, generate the highest-density single downloadable file possible.
+
+If downloadable file generation is unavailable entirely, provide the Markdown content directly in chat and clearly state that file generation is unavailable in the current environment.
+
+If the handoff content is too large for a single Markdown file, generate multiple downloadable Markdown files named:
+
+- `research_conversation_handoff_part1.md`
+- `research_conversation_handoff_part2.md`
+- `research_conversation_handoff_part3.md`
+
+Each part must clearly state its part number and scope.
+
+Part 1 must always include:
+
+- Document Metadata
+- Current State of the Research Work
+- Current Blocker
+- Immediate Next Action
+- Critical files / paths / commands
+- Compressed Emergency Continuity Block
+
+Do not stop after generating only a partial file unless tool or system limits make continuation impossible.
+
+---
+
+# Failure Fallback Rule
+
+If generating the full downloadable Markdown file fails or becomes impossible due to length, tool limits, missing tools, or system constraints, produce at minimum:
+
+1. the Compressed Emergency Continuity Block,
+2. the Immediate Next Action,
+3. the Current Blocker,
+4. the critical files, paths, commands, and errors needed for continuation.
+
+Clearly state that the full handoff could not be generated.
+
+Do not simply stop, restart, or ask the user to try again.
+
+---
+
+# Long Conversation Visibility Rule
+
+If the conversation is too long to fully inspect, explicitly state which portions were available and which portions may not have been visible.
+
+Do not pretend the handoff is complete if the model cannot access the full conversation.
+
+Use wording such as:
+
+`Visibility limitation: The model may not have full access to earlier parts of the conversation. The handoff is based on the visible conversation context, uploaded files, tool outputs, and user-provided materials available at generation time.`
+
+If earlier details are missing or uncertain, mark them as `Unavailable` or `Uncertain`.
+
+---
+
+# Relevance and Density Rule
+
+Do not mechanically fill every section with generic text.
+
+If a conditional section does not apply, omit it unless its absence would create ambiguity.
+
+For each section, prioritize dense, task-relevant continuity information over template completion.
+
+Avoid repeated filler phrases such as:
+
+- `Not applicable`
+- `No information available`
+- `No such item was discussed`
+
+Use such labels only when they prevent ambiguity.
+
+---
+
+# Pre-Handoff Internal Scan Requirement
+
+Before writing the final handoff file, internally scan the conversation for:
+
+1. Research topic.
+2. Research questions.
+3. Hypotheses.
+4. Experimental or computational design.
+5. Datasets.
+6. Filenames.
+7. File paths.
+8. Uploaded files.
+9. URLs.
+10. Code snippets.
+11. Commands and terminal outputs.
+12. Error messages.
+13. User corrections.
+14. Explicit decisions.
+15. User-approved wording.
+16. Rejected wording.
+17. Research methods.
+18. Computational methods.
+19. Statistical methods.
+20. Interpretation logic.
+21. Current blockers.
+22. Unresolved tasks.
+23. Immediate next actions.
+24. Execution evidence.
+25. Missing files.
+26. Failed commands.
+27. Questions already answered and should not be asked again.
+28. File versions or timestamps.
+29. Hidden or implicit assumptions relevant to continuation.
+
+Do not leave asset, decision, correction, or open-issue sections empty unless you explicitly state that no such item appeared in the available context.
+
+---
+
+# Required Markdown Structure
+
+Generate the Markdown file using the following structure.
+
+---
+
+# Research Conversation Handoff Document
+
+## 0. Document Metadata
+
+Include:
+
+- Date and time of handoff generation.
+- Conversation topic.
+- Main research / project title.
+- Current stage of work.
+- Intended use of this handoff.
+- Whether the document is based on:
+  - Current conversation only.
+  - Uploaded files.
+  - User-pasted text.
+  - Assistant memory / prior context.
+  - Tool outputs.
+  - Execution evidence.
+  - A combination of the above.
+- Known limitations of the handoff.
+- Any visibility limitations caused by long conversation length.
+- Whether the handoff is a single file or split into multiple parts.
+
+---
+
+## 1. Purpose of This Handoff
+
+Explain that this document is intended to allow a new GPT conversation to continue the current research task after the original conversation became too long, slow, unstable, or difficult to operate.
+
+State clearly:
+
+- This is not a summary.
+- This is a continuity-preserving research transfer file.
+- The next GPT must treat it as the active working memory of the previous conversation.
+- The next GPT must continue from the current state, not restart from zero.
+- The next GPT must preserve confirmed decisions, terminology, files, paths, methods, and user preferences.
+
+---
+
+## 2. User Profile and Research Working Style
+
+Capture the user’s interaction and research preferences.
+
+Include only preferences supported by the conversation or known context.
+
+### 2.1 Language and Style
+
+Record:
+
+- Preferred language.
+- Preferred tone.
+- Whether the user prefers Traditional Chinese, English, bilingual output, or mixed technical terminology.
+- Whether the user prefers concise answers, detailed explanations, rigorous prose, direct critique, or step-by-step guidance.
+
+### 2.2 Research Communication Preferences
+
+Record:
+
+- How the user wants uncertainty handled.
+- Whether the user prefers direct critique.
+- Whether the user expects GPT to challenge weak logic.
+- Whether the user prefers practical next steps.
+- Whether the user expects exact wording to be preserved.
+- Whether the user dislikes vague summaries or over-polished but empty writing.
+- Whether the user prefers operational commands, checklists, Codex prompts, manuscript-style prose, or conceptual explanation.
+
+### 2.3 Formatting Preferences
+
+Record:
+
+- Preferred structure.
+- Use of headings, tables, bullets, numbered steps, command blocks, checklists, figure captions, academic prose, or presentation-style language.
+- Any terminology or formatting rules established in the conversation.
+
+---
+
+## 3. Main Research / Project Overview
+
+Identify the central research task.
+
+Include:
+
+- Project or research title.
+- Original task description.
+- Revised task description, if changed.
+- Main objective.
+- Background or rationale.
+- Scope of the work.
+- Expected final output.
+- Current state of completion.
+
+Only include outputs that actually apply, such as:
+
+- Markdown handoff file.
+- Code implementation.
+- Debugged script.
+- Data analysis.
+- Statistical interpretation.
+- Literature review.
+- Manuscript paragraph.
+- Thesis section.
+- Figure legend.
+- Methods section.
+- Research proposal.
+- Computational pipeline.
+- Database design.
+- Codex prompt.
+- Reproducibility documentation.
+- Other concrete research deliverable.
+
+---
+
+## 4. Confirmed Facts From the Conversation
+
+Create a table:
+
+| Category | Confirmed Detail | Source / Evidence | Verification Status | Importance for Continuity |
+|---|---|---|---|---|
+
+Include all confirmed facts relevant to continuity, such as:
+
+- Research objective.
+- Project name.
+- File names.
+- File paths.
+- URLs.
+- Data types.
+- Experimental methods.
+- Computational methods.
+- Statistical methods.
+- Tools.
+- Software versions.
+- User-approved wording.
+- User corrections.
+- Current unresolved problem.
+- Desired final output.
+
+Do not include speculative facts in this section.
+
+---
+
+## 5. Current State of the Research Work
+
+State exactly where the project currently stands.
+
+Use this structure:
+
+### 5.1 Completed
+
+List what has been completed.
+
+### 5.2 Partially Completed
+
+List what is partially completed.
+
+### 5.3 Not Yet Completed
+
+List what has not yet been completed.
+
+### 5.4 Current Blocker
+
+Describe the current blocker, if any.
+
+### 5.5 Immediate Next Action
+
+State what the next GPT should do first.
+
+This section must be specific and operational.
+
+Avoid vague statements like:
+
+`Continue working on the project.`
+
+Instead write concrete actions such as:
+
+- Review file X.
+- Run command Y.
+- Revise section Z.
+- Generate Codex prompt for task A.
+- Compare result B with criterion C.
+- Ask user to upload missing file D only if necessary.
+- Verify whether file E exists.
+- Continue drafting from subsection F.
+
+---
+
+## 6. Decisions Already Made
+
+Create a table:
+
+| Decision | Status | Rationale | Source / Evidence | Reopen Only If |
+|---|---|---|---|---|
+
+Include decisions such as:
+
+- Accepted research direction.
+- Accepted structure.
+- Accepted terminology.
+- Accepted file naming.
+- Accepted workflow.
+- Accepted interpretation direction.
+- Accepted tool choice.
+- Accepted prompt design.
+- Accepted output format.
+- Accepted constraints.
+
+Only include decisions supported by the conversation.
+
+---
+
+## 7. User Corrections and Preference Updates
+
+Create a table:
+
+| User Correction / Instruction | What It Changed | Must Preserve? | Source / Evidence | Notes |
+|---|---|---|---|---|
+
+Include all corrections such as:
+
+- “不要這樣寫”.
+- “這不是摘要任務”.
+- “要工程交接文件密度”.
+- “要無縫交接”.
+- “不得記憶遺漏”.
+- “不得捏造事實”.
+- “不得研究偏離”.
+- Any domain-specific correction.
+- Any terminology correction.
+- Any formatting correction.
+- Any coding or workflow correction.
+
+The next GPT must treat these as binding instructions unless the user later changes them.
+
+---
+
+## 8. Files, Images, Tables, Data, Code, and Other Assets
+
+List every relevant file, image, table, screenshot, document, dataset, figure, repository, script, command output, or path mentioned in the conversation.
+
+Create a table:
+
+| Asset Name / Description | Type | Exact Name / Path / URL | Version / Timestamp | Role in Research | Analyzed? | Availability / Verification Status | Latest Known Status | Key Extracted Information | How Next GPT Should Use It |
+|---|---|---|---|---|---|---|---|---|---|
+
+Rules:
+
+- Preserve exact filenames.
+- Preserve exact paths if mentioned.
+- Preserve version, date, timestamp, last modified time, commit hash, run ID, or export time if mentioned.
+- Do not invent version or timestamp information.
+- Do not claim that an asset was analyzed if it was only uploaded or mentioned.
+- If content was interpreted, record the interpretation.
+- If content is unknown, write: `Content not available in conversation`.
+- If the file must be re-uploaded in the new conversation, state that clearly.
+- If a file was missing, preserve the exact missing path and error message if available.
+
+---
+
+## 9. Exact Evidence Log
+
+Preserve exact evidence that affects continuity.
+
+This may include:
+
+- User-provided text.
+- Terminal commands.
+- Terminal outputs.
+- Error messages.
+- Git status outputs.
+- Git diff outputs.
+- File listings.
+- Screenshots interpreted.
+- Tables read.
+- Code snippets.
+- Prompt snippets.
+- User-approved wording.
+- Research wording.
+- Statistical wording.
+- Figure captions.
+- Failed commands.
+- Commands that produced no output.
+
+Use code blocks where exact wording matters.
+
+Do not paraphrase away important paths, numbers, or errors.
+
+If a command produced no output and that matters, record that explicitly.
+
+---
+
+## 10. Drafts, Prompts, Code, and Outputs Already Produced
+
+For each important prior output, include:
+
+### 10.x Output Title / Purpose
+
+### Status
+
+Use one of:
+
+- User-approved.
+- Needs revision.
+- Partially accepted.
+- Rejected.
+- Draft only.
+- Unclear.
+- Superseded.
+- Assistant-generated but unverified.
+
+### Exact or Near-Exact Content
+
+Preserve exact wording when relevant.
+
+### Notes for Next GPT
+
+Explain whether the next GPT should reuse, revise, avoid, verify, or expand it.
+
+---
+
+## 11. Rejected, Avoided, or Problematic Directions
+
+Create a table:
+
+| Rejected / Avoided Direction | Reason | Source / Evidence | Risk If Reintroduced |
+|---|---|---|---|
+
+Include anything the user rejected or anything that would cause research drift, such as:
+
+- Oversimplified summary.
+- Restarting from zero.
+- Overclaiming results.
+- Inventing missing facts.
+- Ignoring user-approved wording.
+- Using vague language instead of precise language.
+- Losing file names or paths.
+- Repeating failed commands.
+- Reopening settled decisions.
+- Asking questions already answered.
+- Changing terminology without reason.
+- Treating unverified drafts as completed work.
+- Redesigning the research direction without cause.
+
+---
+
+## 12. Open Issues and Unresolved Questions
+
+Create a table:
+
+| Issue | Why It Matters | Information Needed | Suggested Next Action |
+|---|---|---|---|
+
+Only include real unresolved issues.
+
+Do not invent missing problems.
+
+If no open issue exists, write:
+
+`No unresolved issue was explicitly identified in the available context, but the next GPT should verify continuity before proceeding.`
+
+---
+
+## 13. Important Inferred Assumptions
+
+Include only assumptions that are necessary for continuation and strongly supported by the visible conversation.
+
+Create a table:
+
+| Inferred Assumption | Basis in Conversation | Confidence | Risk If Wrong | How Next GPT Should Handle It |
+|---|---|---|---|---|
+
+Rules:
+
+- Mark all items as `Inferred, not explicitly confirmed`.
+- Do not treat inferred assumptions as confirmed facts.
+- Do not infer the user's private motives, identity, emotions, or unstated personal preferences.
+- Do not invent assumptions merely to fill the table.
+- If no important inferred assumptions are visible, omit this section.
+---
+
+## 14. Questions Already Answered and Should Not Be Asked Again
+
+Create a table:
+
+| Already Answered Question / Topic | Answer / Established State | Source / Evidence | Why Not Ask Again |
+|---|---|---|---|
+
+Include only questions or details that were clearly answered or settled in the available context.
+
+If no such items are visible, write:
+
+`No clearly answered repeat-risk questions were identified in the available context.`
+
+---
+
+## 15. Risk Register for Continuity Failure
+
+Create a table:
+
+| Risk | Example | Prevention |
+|---|---|---|
+
+Include relevant risks such as:
+
+- Memory loss.
+- File loss.
+- Misinterpreting the research project.
+- Treating the task as a generic summary.
+- Repeating completed work.
+- Asking already answered questions.
+- Overcompressing details.
+- Hallucinating methods, results, or file contents.
+- Changing terminology.
+- Losing the user’s preferred tone.
+- Ignoring latest user correction.
+- Confusing old state with current state.
+- Restarting from scratch.
+- Failing to preserve error messages.
+- Failing to distinguish confirmed facts from assumptions.
+- Overstating project completion.
+- Failing to mark unavailable context.
+- Treating assistant-generated suggestions as verified results.
+- Treating expected outputs as actual outputs.
+- Redesigning the project without cause.
+
+---
+
+# Conditional Research-Specific Sections
+
+Include the following sections only if they apply.
+
+If a section does not apply, omit it unless its absence would create ambiguity.
+
+---
+
+## 16. Scientific / Research Context
+
+Include if the conversation involves scientific, biomedical, pharmaceutical, chemical, engineering, computational, or academic research.
+
+### 16.1 Research Question
+
+### 16.2 Scientific Rationale
+
+### 16.3 Biological / Medical / Technical Context
+
+Record disease model, biological system, computational system, engineering context, or methodological background if discussed.
+
+### 16.4 Experimental / Analytical Design
+
+Record groups, comparisons, datasets, methods, treatments, interventions, computational workflows, or research design if discussed.
+
+### 16.5 Endpoints / Outputs / Evaluation Metrics
+
+Create a table:
+
+| Endpoint / Output / Metric | Measurement Type | Meaning | Status |
+|---|---|---|---|
+
+### 16.6 Interpretation Logic
+
+Explain:
+
+- Which comparisons matter.
+- Which claims are appropriate.
+- Which claims should be avoided.
+- Which mechanisms are supported.
+- Which mechanisms are only hypothetical.
+- Which conclusions remain uncertain.
+
+---
+
+## 17. Literature / Citation Context
+
+Include if literature, references, papers, citations, or source-based claims were discussed.
+
+Record:
+
+- Papers mentioned.
+- Citation details, if available.
+- Claims supported by literature.
+- Claims not yet supported by literature.
+- Whether sources were actually verified.
+- Which references must be preserved exactly.
+- Which references need to be checked later.
+
+Create a table:
+
+| Reference / Source | Claim or Use | Verified? | Notes for Next GPT |
+|---|---|---|---|
+
+Do not invent citations.
+
+---
+
+## 18. Statistical Analysis Context
+
+Include only if statistics were discussed.
+
+### 18.1 Data Presentation
+
+Record formats such as:
+
+- mean ± SD.
+- mean ± SEM.
+- median with IQR.
+- percentage.
+- confidence interval.
+- effect size.
+
+### 18.2 Tests Used
+
+Record exactly:
+
+- t test type.
+- F test for variance.
+- Welch’s t test.
+- one-way ANOVA.
+- two-way ANOVA.
+- repeated measures.
+- post hoc tests.
+- nonparametric tests.
+- correction methods.
+- significance threshold.
+- software.
+
+### 18.3 Confirmed Statistical Wording
+
+Preserve exact user-approved or assistant-approved wording.
+
+### 18.4 Statistical Cautions
+
+Record anything that must not be overstated, such as:
+
+- Whether normality was tested.
+- Whether equal variance was assumed.
+- Whether multiple comparison correction is needed.
+- Whether sample size is limited.
+- Whether interaction effects were tested.
+- Whether causality can or cannot be claimed.
+
+---
+
+## 19. Code / Repository / Engineering Context
+
+Include if code, Git, scripts, terminal commands, computational workflow, database work, or software implementation were discussed.
+
+### 19.1 Repository State
+
+Record:
+
+- Repository name.
+- GitHub URL.
+- Local repository path.
+- Current branch.
+- Last known commit hash or commit message.
+- Whether working tree was clean.
+- Whether `git status` showed changes.
+- Whether `git diff --stat` showed changes.
+
+### 19.2 Environment
+
+Record:
+
+- Operating system.
+- Machine used.
+- Python version.
+- Package manager.
+- Important installed software.
+- Executable paths.
+- NAS paths.
+- Docker paths.
+- Environment variables.
+- Any relevant hardware constraints.
+
+### 19.3 Commands Already Run
+
+Create a table:
+
+| Command | Result | Importance |
+|---|---|---|
+
+Preserve exact command text where possible.
+
+### 19.4 Files Confirmed to Exist
+
+Create a table:
+
+| File / Path | Evidence | Role |
+|---|---|---|
+
+### 19.5 Files Confirmed Missing
+
+Create a table:
+
+| Missing File / Path | Evidence | Consequence | Next Action |
+|---|---|---|---|
+
+### 19.6 Current Implementation State
+
+Explain:
+
+- What is implemented.
+- What is stubbed.
+- What is planned.
+- What failed.
+- What must be verified next.
+
+### 19.7 Validation / Test Commands
+
+List commands the next GPT should use or ask the user to run.
+
+### 19.8 Pass / Fail Criteria
+
+Define what successful continuation looks like.
+
+---
+
+## 20. Codex / Automation / Agent Handoff
+
+Include if Codex, code-generation agents, automation, multi-agent workflow, or AI-assisted implementation were discussed.
+
+Record:
+
+- Last completed Codex task.
+- Last incomplete Codex task.
+- Files Codex was expected to create or modify.
+- Files Codex must not touch.
+- What Codex should verify.
+- What Codex should not redesign.
+- Validation commands.
+- Expected output files.
+- Pass/fail criteria.
+- Suggested next Codex prompt.
+- Risks of letting Codex restart, overwrite, or overgeneralize the project.
+
+---
+
+## 21. Research Writing / Document Context
+
+Include if writing, editing, translation, thesis sections, manuscript sections, figure legends, meeting notes, research proposals, or document generation were discussed.
+
+Record:
+
+- Target document type.
+- Audience.
+- Tone.
+- Language.
+- User-approved wording.
+- Rejected wording.
+- Required structure.
+- Sections already drafted.
+- Sections still needed.
+- Whether final output should be Word, PDF, Markdown, slides, plain text, or chat response.
+
+---
+
+## 22. Final Handoff Quality Check
+
+Before finalizing, include this section in the Markdown file and complete it honestly:
+
+| Check Item | Status | Notes |
+|---|---|---|
+| User’s latest instruction was prioritized | Pass / Issue | |
+| Confirmed facts are separated from inferred facts | Pass / Issue | |
+| Source reliability labels are used where important | Pass / Issue | |
+| Verification status is marked where important | Pass / Issue | |
+| Execution evidence overrides earlier plans where applicable | Pass / Issue | |
+| Assistant memory was not treated as primary evidence | Pass / Issue | |
+| Files and assets are listed with availability status | Pass / Issue | |
+| File versions or timestamps are preserved where available | Pass / Issue | |
+| Exact paths, commands, and errors are preserved where relevant | Pass / Issue | |
+| Missing files or unavailable assets were handled without fabrication | Pass / Issue | |
+| Immediate next action is concrete | Pass / Issue | |
+| A new GPT can identify the first concrete action within 30 seconds | Pass / Issue | |
+| No invented facts were added | Pass / Issue | |
+| Open issues are clearly marked | Pass / Issue | |
+| Important implicit assumptions are marked as inferred, not confirmed | Pass / Issue | |
+| Questions already answered are identified where relevant | Pass / Issue | |
+| Unavailable or uncertain context is labeled | Pass / Issue | |
+| Emergency continuity block is included | Pass / Issue | |
+| Project completion was not exaggerated | Pass / Issue | |
+| Relevant domain-specific sections were included only when applicable | Pass / Issue | |
+| Irrelevant side discussions were excluded or minimized | Pass / Issue | |
+| Research main thread was preserved as the organizing center | Pass / Issue | |
+| Template completion did not override research-state preservation | Pass / Issue | |
+| No unjustified redesign of the research direction was introduced | Pass / Issue | |
+| Large handoff splitting or fallback rules were followed if needed | Pass / Issue | |
+| Fallback minimum content is available if full file generation fails | Pass / Issue | |
+
+If any item is marked `Issue`, explain the issue briefly and state how the next GPT should handle it.
+
+---
+
+## 23. Operating Instructions for the Next GPT
+
+Write direct instructions to the next GPT.
+
+Include:
+
+- Read this file first.
+- Treat this file as the active working memory.
+- Do not restart from zero.
+- Do not ask questions already answered in this file.
+- Continue from the “Immediate Next Action” section.
+- Preserve user-approved wording and style.
+- Mark uncertainty explicitly.
+- Do not hallucinate missing data.
+- Ask for missing files only if absolutely necessary.
+- If files are unavailable, state that limitation and continue with available information.
+- Distinguish between confirmed facts, plausible interpretation, and speculation.
+- Preserve exact file paths, commands, and error messages.
+- Preserve file versions, timestamps, commit hashes, run IDs, and export times when available.
+- Prioritize the newest explicit user-provided information.
+- Do not treat assistant memory as primary evidence unless confirmed.
+- Do not treat expected outputs as actual outputs unless execution evidence confirms them.
+- Treat implicit assumptions as inferred, not confirmed.
+- Do not reopen settled decisions unless the user asks or there is a clear contradiction.
+- Do not redesign the research question, experimental design, statistical strategy, computational workflow, or writing structure without cause.
+- If the task involves current information, browse or verify with reliable sources before answering.
+- If the task involves code, inspect current state before proposing changes.
+- If the task involves scientific or technical claims, avoid overclaiming.
+- If the handoff contains visibility limitations, acknowledge them and proceed carefully.
+- If the user provides newer evidence in the new conversation, update the project state accordingly.
+
+---
+
+## 24. Suggested Prompt for the Next Conversation
+
+Generate a ready-to-copy prompt the user can paste into a new GPT conversation.
+
+The prompt must include:
+
+```text
+I am continuing a previous long-form research conversation. Please read the attached Markdown handoff file first and treat it as the active memory of the previous conversation.
+
+This is not a summary; it is a continuity-preserving research handoff file.
+
+Do not restart the work, do not reinterpret the research direction from zero, and do not invent missing facts.
+
+Continue from the section “Immediate Next Action” and preserve the user’s communication style, terminology, confirmed decisions, research logic, files, paths, and constraints.
+
+If the file upload fails, ask me to paste the “EMERGENCY CONTINUITY BLOCK” instead.
+```
+
+You may customize the prompt based on the actual research task.
+
+---
+
+## 25. Compressed Emergency Continuity Block
+
+At the end of the Markdown file, generate a dense backup block that can be pasted directly into a new GPT conversation if the `.md` file cannot be uploaded.
+
+This block should be short enough to paste easily, but dense enough to preserve continuity.
+
+Aim for **500–1000 Chinese characters** or **300–700 English words**, unless the project is highly complex.
+
+Include:
+
+- User style.
+- Main research task.
+- Current objective.
+- Confirmed decisions.
+- Key files / data / commands / outputs.
+- File versions, timestamps, commit hashes, run IDs, or export times if critical.
+- Current state.
+- Current blocker.
+- Immediate next action.
+- Questions already answered and should not be asked again.
+- Critical prohibitions.
+
+Format it exactly like this:
+
+```text
+EMERGENCY CONTINUITY BLOCK:
+[Dense handoff content here]
+```
+
+---
+
+# Final Response Requirement
+
+If the environment does not support file creation or downloadable links, output the Markdown content directly in chat and clearly state that downloadable file generation is unavailable in this environment.
+
+After generating the Markdown file, reply only with:
+
+- A brief statement that the handoff file has been created.
+- A direct download link to the `.md` file or all `.md` part files if split.
+
+Do not paste the entire Markdown content into the chat unless file generation fails.
+
+If file generation fails, provide at minimum:
+
+1. the Compressed Emergency Continuity Block,
+2. the Immediate Next Action,
+3. the Current Blocker,
+4. the critical files, paths, commands, and errors needed for continuation.
+
+Clearly state that the full handoff file could not be generated.
